@@ -6,29 +6,29 @@
     fxLayoutGap="10px" 
     fxLayoutGap.xs="0">
 
-  <div fxFlex="40">
-    <md-list *ngIf="dish">
+  <div fxFlex="40" *ngIf="dish" [@visibility]="visibility" [@expand]>
       <md-card> 
         <md-card-header>
           <md-card-title>
             <h2>{{dish.name | uppercase}}</h2>
           </md-card-title>
         </md-card-header>
-        <img md-card-image src={{dish.image}} alt={{dish.name}}>
+        <img md-card-image src="{{BaseURL + dish.image}}" alt={{dish.name}}>
         <md-card-content>
           <p>{{dish.description}}</p>
         </md-card-content>
         <md-card-actions>
+          <button md-button [routerLink]="['/dishDetail', prev]"><span class="fa fa-chevron-left fa-lg"></span></button>
           <button md-button (click)="goBack()">BACK</button>
           <button md-button>LIKE</button>
           <button md-button>SHARE</button>
+          <span class="flex-spacer"></span>
+          <button md-button [routerLink]="['/dishDetail', next]"><span class="fa fa-chevron-right fa-lg"></span></button>
         </md-card-actions>
       </md-card>
-    </md-list>
   </div>
 
-  <div fxFlex="60">
-    <md-list *ngIf="dish">
+  <div fxFlex="40" *ngIf="dish" [@visibility]="visibility" [@expand]>
       <md-card>
         <md-card-header>
           <md-card-title>
@@ -42,7 +42,50 @@
           <p>-- {{comment.author}} {{comment.date | date}}</p>
         </md-card-content>  
       </md-list>
+      
+      <form novalidate [formGroup]="feedbackForm" (ngSubmit)="onSubmit()">
+        <div [hidden]="(feedbackForm.invalid)">
+          <md-list>
+            <md-card-content>
+              <p>{{feedbackForm.value.comment}}</p>
+              <p>{{feedbackForm.value.rating}} Stars</p>
+              <p>-- {{feedbackForm.value.author}} {{feedbackForm.value.date | date}}</p>
+            </md-card-content>  
+          </md-list>
+        </div>
+        <p>
+          <md-input-container 
+            dividerColor="{{(formErrors.author) ? 'warn' : 'primary'}}">
+            <input mdInput formControlName="author" placeholder="Name" type="text" required>
+            <md-hint>
+              <span [hidden]="!(formErrors.author)">
+                {{formErrors.author}}</span>
+            </md-hint>
+          </md-input-container>
+        </p>
+        <p>
+          <md-slider formControlName="rating" thumbLabel tickInterval="1" min="1" max="5" step="1" value="5"></md-slider>
+        </p>  
+        <p>  
+          <md-input-container 
+            dividerColor="{{(formErrors.comment) ? 'warn' : 'primary'}}">
+            <textarea mdInput formControlName="comment" placeholder="Your Comment" rows=12 required></textarea>
+            <md-hint>
+              <span [hidden]="!(formErrors.comment)">
+                {{formErrors.comment}}</span>
+            </md-hint>
+          </md-input-container>
+        </p>
+        <button type="submit" md-button class="background-primary text-floral-white" 
+          [disabled]="feedbackForm.invalid" (ngSubmit)="onSubmit()">Submit</button>
+      </form>
       </md-card> 
-    </md-list>
+  </div>
+  <div [hidden]="dish || errMess">
+        <md-spinner></md-spinner><h4>Loading . . . Please Wait</h4>
+  </div>
+  <div *ngIf="errMess">
+    <h2>Error</h2>
+    <h4>{{errMess}}</h4>
   </div>
 </div>

@@ -5,46 +5,66 @@
      fxLayoutAlign.gt-md="space-around center"
      fxLayoutGap="10px">
 
-<md-card *ngIf="dish" fxFlex>
+<md-card *ngIf="dish" fxFlex [@expand]>
   <md-card-header>
     <div md-card-avatar></div>
     <md-card-title>
       <h3>{{dish.name | uppercase}}</h3>
     </md-card-title>
   </md-card-header>
-  <img md-card-image src={{dish.image}} alt={{dish.name}}>
+  <img md-card-image src="{{BaseURL + dish.image}}" alt={{dish.name}}>
   <md-card-content>
     <p>{{dish.description}}
     </p>
   </md-card-content>
 </md-card>
+<div [hidden]="dish || errMessDish">
+    <md-spinner></md-spinner><h4>Loading . . . Please Wait</h4>
+</div>
+<div *ngIf="errMessDish">
+  <h2>Error</h2>
+  <h4>{{errMessDish}}</h4>
+</div>
 
-<md-card *ngIf="promotion" fxFlex>
+<md-card *ngIf="promotion" fxFlex [@expand]>
   <md-card-header>
     <div md-card-avatar></div>
     <md-card-title>
       <h3>{{promotion.name | uppercase}}</h3>
     </md-card-title>
   </md-card-header>
-  <img md-card-image src={{promotion.image}} alt={{promotion.name}}>
+  <img md-card-image src="{{BaseURL + promotion.image}}" alt={{promotion.name}}>
   <md-card-content>
     <p>{{promotion.description}}
     </p>
   </md-card-content>
 </md-card>
+<div [hidden]="promotion || errMessPromotion">
+    <md-spinner></md-spinner><h4>Loading . . . Please Wait</h4>
+</div>
+<div *ngIf="errMessPromotion">
+  <h2>Error</h2>
+  <h4>{{errMessPromotion}}</h4>
+</div>
 
-<md-card *ngIf="leader" fxFlex>
+<md-card *ngIf="leader" fxFlex [@expand]>
   <md-card-header>
     <div md-card-avatar></div>
     <md-card-title>
       <h3>{{leader.name | uppercase}}</h3>
     </md-card-title>
   </md-card-header>
-  <img md-card-image src={{leader.image}} alt={{leader.name}}>
+  <img md-card-image src="{{BaseURL + leader.image}}" alt={{leader.name}}>
   <md-card-content>
     <p>{{leader.description}}
     </p>
   </md-card-content>
 </md-card>
-
+<div [hidden]="leader || errMessLeader">
+    <md-spinner></md-spinner><h4>Loading . . . Please Wait</h4>
+</div>
+<div *ngIf="errMessLeader">
+  <h2>Error</h2>
+  <h4>{{errMessLeader}}</h4>
+</div>
 </div>
